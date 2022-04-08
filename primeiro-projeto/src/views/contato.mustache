@@ -1,0 +1,20 @@
+<html>
+
+{{>partials/header}}
+
+<body>
+  {{>partials/title}}
+  <h2>Entre em contato</h2>
+  <form method="post" action="idade-resultado">
+    <input type='text' name='nome' placeholder="Nome" />
+    <br />
+    <br />
+    <button type="submit">Enviar</button>
+  </form>
+
+  {{#name}}
+  Opa <strong>{{name}}</strong>, tudo bem?
+  {{/name}}
+</body>
+
+</html>

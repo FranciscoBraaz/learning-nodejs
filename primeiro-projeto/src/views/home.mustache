@@ -1,0 +1,27 @@
+<html>
+{{>partials/header}}
+
+<body>
+  {{>partials/title}}
+  {{#showAge}}
+  Opa {{ name }}, tudo bem? Vi que você tem {{age}} anos!
+  {{/showAge}}
+
+  <ul>
+    {{#products}}
+    <li>{{title}} - R$ {{price}}</li>
+    {{/products}}
+  </ul>
+
+  <ul>
+    {{#frases}}
+    <li>{{.}}</li>
+    {{/frases}}
+    {{^frases}}
+    Não há frases motivacionais
+    {{/frases}}
+  </ul>
+
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+{{>partials/header}}
+
+Opa {{name}} {{lastName}}, tudo bem?
+{{#showOld}}
+Como vai a vida?
+{{/showOld}}
+{{^showOld}}
+Beleza?
+{{/showOld}}
+<hr />
+<fieldset>
+    <legend>Novo usuário</legend>
+    <form method="post" action="/user">
+        <input type='text' name='name' placeholder="Nome" style="display: block; margin-bottom: 10px;" />
+        <input type="number" name="age" placeholder="Idade" style="display: block; margin-bottom: 10px;" />
+        <button type=" submit">Enviar</button>
+    </form>
+</fieldset>
+<h2>Usuários</h2>
+<ul>
+    {{#users}}
+    <li>
+        <span>
+            Nome: {{name}} (Primeira letra - {{firstLetter}}) - Idade: {{age}}
+        </span>
+        <a href="/user-increment/{{id}}">+</a>
+        <span>**</span>
+        <a href="/user-decrement/{{id}}">-</a>
+        <span>**</span>
+        <a href="/user-destroy/{{id}}">Excluir</a>
+    </li>
+    {{/users}}
+</ul>
+
+
+
+
+<hr />
+<h2>Produtos</h2>
+<ul>
+    {{#products}}
+    {{>partials/productItem}}
+    {{/products}}
+</ul>
+
+<hr />
+<h2>Produtos a partir de R$ 12</h2>
+<ul>
+    {{#expensives}}
+    {{>partials/productItem}}
+    {{/expensives}}
+</ul>
+
+<hr />
+
+<ul>
+    {{#frasesDoDia}}
+    <li>{{.}}</li>
+    {{/frasesDoDia}}
+    {{^frasesDoDia}}
+    Não há frases motivacionais hoje.
+    {{/frasesDoDia}}
+</ul>
+
+{{>partials/footer}}
