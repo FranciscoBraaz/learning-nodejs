@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Sequelize } from 'sequelize';
 import { Phrase } from '../models/phrase';
 
 export const welcome = (req: Request, res: Response) => {
@@ -57,6 +58,19 @@ export const deletePhrase = async (req: Request, res: Response) => {
     await Phrase.destroy({ where: { id } });
     res.status(200);
     res.json({ message: 'Frase excluída com sucesso' });
+  } else {
+    res.status(404);
+    res.json({ message: 'Frase não encontrada' });
+  }
+};
+
+export const randomPhrase = async (req: Request, res: Response) => {
+  const phrase = await Phrase.findOne({
+    order: [Sequelize.fn('RANDOM')],
+  });
+
+  if (phrase) {
+    res.json(phrase);
   } else {
     res.status(404);
     res.json({ message: 'Frase não encontrada' });
