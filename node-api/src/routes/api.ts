@@ -1,19 +1,13 @@
-import { Router, Response, Request } from 'express';
+import { Router } from 'express';
+import * as PhraseController from '../controllers/phraseController';
 
 const router = Router();
 
-router.get('/ping', (req: Request, res: Response) => {
-  res.json({ pong: true });
-});
-
-router.get('/random', (req: Request, res: Response) => {
-  res.json({ num: Math.random() });
-});
-
-router.get('/name', (req, res) => {
-  const name = req.query.name;
-
-  res.json({ name });
-});
+router.get('/', PhraseController.welcome);
+router.post('/frases', PhraseController.createPhrase);
+router.get('/frases', PhraseController.listPhrase);
+router.get('/frase/:id', PhraseController.getPhrase);
+router.put('/frase/:id', PhraseController.updatePhrase);
+router.delete('/frase/:id', PhraseController.deletePhrase);
 
 export default router;
