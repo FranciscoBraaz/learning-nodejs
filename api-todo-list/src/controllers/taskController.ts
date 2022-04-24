@@ -30,7 +30,7 @@ export const updateTask = async (req: Request, res: Response) => {
   const taskChanges = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(404);
+    res.status(400);
     res.json({ message: 'Id inválido' });
     return;
   }
@@ -45,4 +45,27 @@ export const updateTask = async (req: Request, res: Response) => {
   let result = await task!.save();
 
   res.json(result);
+};
+
+export const deleteTask = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(400);
+    res.json({ message: 'Id inválido' });
+    return;
+  }
+
+  try {
+    let result = await Task.findByIdAndDelete(id);
+
+    if (!result) {
+      res.status(404).json({ message: 'Tarefa não encontrada' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Tarefa excluída com sucesso' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
 };
