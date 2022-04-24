@@ -9,7 +9,7 @@ export const getTask = async (req: Request, res: Response) => {
 };
 
 export const createTask = async (req: Request, res: Response) => {
-  const { title } = req.body;
+  const { title, done } = req.body;
 
   if (!title) {
     res.status(400);
@@ -17,7 +17,7 @@ export const createTask = async (req: Request, res: Response) => {
   }
 
   try {
-    let newTask = await Task.create({ title });
+    let newTask = await Task.create({ title, done: done ? done : false });
     res.json(newTask);
   } catch (error) {
     res.status(500);
