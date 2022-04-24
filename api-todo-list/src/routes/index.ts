@@ -8,5 +8,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/tasks', TaskController.getTask);
+router.post('/tasks', TaskController.createTask);
 
 export default router;

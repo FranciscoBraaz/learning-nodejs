@@ -15,6 +15,6 @@ const modelName: string = 'Task';
 const taskModel =
   connection && connection.models[modelName]
     ? (connection.models[modelName] as Model<TaskType>)
-    : model<TaskType>(modelName, schema);
+    : model<TaskType>(modelName, schema, 'task');
 
 export default taskModel;
