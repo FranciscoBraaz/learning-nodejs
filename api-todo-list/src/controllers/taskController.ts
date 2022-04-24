@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 import Task from '../models/Task';
 
 export const getTask = async (req: Request, res: Response) => {
@@ -22,4 +23,26 @@ export const createTask = async (req: Request, res: Response) => {
     res.status(500);
     res.json({ message: 'Erro interno do servidor' });
   }
+};
+
+export const updateTask = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const taskChanges = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(404);
+    res.json({ message: 'Id inválido' });
+    return;
+  }
+
+  let task = await Task.findById(id);
+  if (!task) {
+    res.status(404).json({ message: 'Tarefa não encontrada' });
+    return;
+  }
+
+  Object.assign(task, taskChanges);
+  let result = await task!.save();
+
+  res.json(result);
 };

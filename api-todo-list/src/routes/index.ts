@@ -7,7 +7,8 @@ router.get('/', (req, res) => {
   res.json({ message: 'Bem vindo!' });
 });
 
-router.get('/tasks', TaskController.getTask);
-router.post('/tasks', TaskController.createTask);
+router.get('/tarefas', TaskController.getTask);
+router.post('/tarefas', TaskController.createTask);
+router.patch('/tarefa/:id', TaskController.updateTask);
 
 export default router;
