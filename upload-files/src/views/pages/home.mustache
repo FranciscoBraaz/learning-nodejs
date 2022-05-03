@@ -1,0 +1,25 @@
+{{>partials/header}}
+
+<fieldset>
+    <legend>Adicionar novo usuário</legend>
+    <form method="POST" action="/usuario">
+        <input type='text' placeholder="Digite seu nome" name='first_name' style="display: block; margin-bottom: 10px;" />
+        <input type='text' placeholder="Digite seu sobrenome" name='last_name' style="display: block; margin-bottom: 10px;" />
+        <input type='number' placeholder="Digite sua idade" name='age' style="display: block; margin-bottom: 10px;" />
+        <input type='email' placeholder="Digite seu email" name='email' style="display: block; margin-bottom: 10px;" />
+        <input type='text' placeholder="Digite seus interesses" name='interests' style="display: block; margin-bottom: 10px;" />
+        <button type="submit">Criar</button>
+    </form>
+</fieldset>
+
+<hr />
+<h2>Usuário</h2>
+<ul>
+    {{#users}}
+    {{>partials/productItem}}
+    {{/users}}
+</ul>
+
+
+
+{{>partials/footer}}
