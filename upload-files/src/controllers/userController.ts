@@ -32,3 +32,10 @@ export const incrementAge = async (req: Request, res: Response) => {
 
   res.redirect('/');
 };
+
+export const uploadFile = async (req: Request, res: Response) => {
+  let files = req.files as { [fieldname: string]: Express.Multer.File[] };
+  console.log('Avatar:', files.avatar);
+  console.log('Gallery:', files.gallery);
+  res.json({});
+};
