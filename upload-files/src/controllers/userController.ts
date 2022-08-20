@@ -1,41 +1,28 @@
-import { Request, Response } from 'express';
-import User from '../models/User';
+import { Request, Response } from "express"
+import User from "../models/User"
 
 export const createUser = async (req: Request, res: Response) => {
-  const data = req.body;
-  let newUser = new User();
+  const data = req.body
+  let newUser = new User()
 
-  try {
-    newUser.name.first_name = data.first_name;
-    newUser.name.last_name = data.last_name;
-    newUser.age = Number(data.age);
-    newUser.email = data.email;
-    newUser.interests = data.interests.split(', ');
+  console.log()
 
-    await newUser.save();
+  res.redirect("/")
+}
 
-    console.log('Usuário criado com sucesso');
-  } catch (error) {
-    console.log('Erro na criação do usuário:', error);
-  }
-
-  res.redirect('/');
-};
+export const getUsers = async (req: Request, res: Response) => {
+  const users = await User.find({})
+  console.log(users)
+  res.json({ users })
+}
 
 export const incrementAge = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  let user = await User.findById(id);
+  const { id } = req.params
+  let user = await User.findById(id)
   if (user) {
-    user.age++;
-    await user.save();
+    user.age++
+    await user.save()
   }
 
-  res.redirect('/');
-};
-
-export const uploadFile = async (req: Request, res: Response) => {
-  let files = req.files as { [fieldname: string]: Express.Multer.File[] };
-  console.log('Avatar:', files.avatar);
-  console.log('Gallery:', files.gallery);
-  res.json({});
-};
+  res.redirect("/")
+}
