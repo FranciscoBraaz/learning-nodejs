@@ -22,9 +22,9 @@ const upload = multer({
     const allowedTypes = ["image/jpg", "image/jpeg", "image/png"]
     cb(null, allowedTypes.includes(file.mimetype))
   },
-  limits: {
-    fileSize: 4154450,
-  },
+  // limits: {
+  //   fileSize: 4154450,
+  // },
 })
 
 const router = Router()

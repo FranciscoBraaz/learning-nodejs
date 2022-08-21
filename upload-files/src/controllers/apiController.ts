@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import sharp from "sharp"
 
 export function uploadFiles(req: Request, res: Response) {
   // const files = req.files as { [fieldname: string]: Express.Multer.File[] }
@@ -14,8 +15,20 @@ export function uploadFiles(req: Request, res: Response) {
   res.json({})
 }
 
-export function uploadFile(req: Request, res: Response) {
+export async function uploadFile(req: Request, res: Response) {
+  if (!req.file) {
+    res.json({ error: "Houve um problema no envio do arquivo" }).status(400)
+    return
+  }
   console.log(req.file)
+  await sharp(req.file.path)
+    .resize(300, 400, {
+      position: "top",
+      fit: "cover",
+    })
+    .grayscale()
+    .toFormat("jpeg")
+    .toFile(`./public/media/${req.file.filename}.jpg`)
 
   res.json({})
 }
