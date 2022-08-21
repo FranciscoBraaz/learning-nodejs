@@ -22,6 +22,13 @@ router.get("/usuario", UserController.getUsers)
 router.get("/usuario/:id/addidade", UserController.incrementAge)
 router.post("/usuario", UserController.createUser)
 
-router.post("/upload", upload.single("avatar"), ApiController.uploadFile)
+router.post(
+  "/upload",
+  upload.fields([
+    { name: "signature", maxCount: 1 },
+    { name: "prints", maxCount: 3 },
+  ]),
+  ApiController.uploadFile,
+)
 
 export default router
