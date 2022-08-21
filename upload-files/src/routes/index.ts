@@ -7,8 +7,17 @@ import * as ApiController from "../controllers/apiController"
 
 import multer from "multer"
 
+const storageConfig = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./tmp")
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  },
+})
+
 const upload = multer({
-  dest: "./tmp",
+  storage: storageConfig,
 })
 
 const router = Router()
@@ -23,12 +32,13 @@ router.get("/usuario/:id/addidade", UserController.incrementAge)
 router.post("/usuario", UserController.createUser)
 
 router.post(
-  "/upload",
+  "/upload-files",
   upload.fields([
     { name: "signature", maxCount: 1 },
     { name: "prints", maxCount: 3 },
   ]),
-  ApiController.uploadFile,
+  ApiController.uploadFiles,
 )
+router.post("/upload-file", upload.single("image"), ApiController.uploadFile)
 
 export default router
