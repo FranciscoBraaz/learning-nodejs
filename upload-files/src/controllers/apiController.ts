@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import { unlink } from "fs/promises"
 import sharp from "sharp"
 
 export function uploadFiles(req: Request, res: Response) {
@@ -21,6 +22,7 @@ export async function uploadFile(req: Request, res: Response) {
     return
   }
   console.log(req.file)
+  const filename = `${req.file.filename}.jpg`
   await sharp(req.file.path)
     .resize(300, 400, {
       position: "top",
@@ -28,7 +30,9 @@ export async function uploadFile(req: Request, res: Response) {
     })
     .grayscale()
     .toFormat("jpeg")
-    .toFile(`./public/media/${req.file.filename}.jpg`)
+    .toFile(`./public/media/${filename}`)
+
+  await unlink(req.file.path)
 
   res.json({})
 }
