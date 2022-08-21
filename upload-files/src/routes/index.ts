@@ -7,17 +7,24 @@ import * as ApiController from "../controllers/apiController"
 
 import multer from "multer"
 
-const storageConfig = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./tmp")
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname)
-  },
-})
+// const storageConfig = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./tmp")
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.originalname)
+//   },
+// })
 
 const upload = multer({
-  storage: storageConfig,
+  dest: "./tmp",
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ["image/jpg", "image/jpeg", "image/png"]
+    cb(null, allowedTypes.includes(file.mimetype))
+  },
+  limits: {
+    fileSize: 4154450,
+  },
 })
 
 const router = Router()
