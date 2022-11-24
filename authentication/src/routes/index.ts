@@ -8,6 +8,7 @@ router.get("/", (req, res) => {
   res.json({ message: "Bem vindo" })
 })
 
+router.post("/login", Api.login)
 router.get("/list", Auth.private, Api.list)
 
 export default router
