@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express"
 import passport from "passport"
 import { BasicStrategy } from "passport-http"
 import User from "../models/User"
@@ -20,5 +21,21 @@ passport.use(
     return done(notAuthorizedJson, false)
   }),
 )
+
+export const privateRoute = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const authFunction = passport.authenticate("basic", (err, user) => {
+    if (user) {
+      next()
+    } else {
+      next(notAuthorizedJson)
+    }
+  })
+
+  authFunction(req, res, next)
+}
 
 export default passport
