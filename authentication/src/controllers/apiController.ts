@@ -5,6 +5,10 @@ import User from "../models/User"
 
 dotenv.config()
 
+interface RequestExtended extends Request {
+  id?: string
+}
+
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body
 
@@ -34,7 +38,8 @@ export async function login(req: Request, res: Response) {
   res.json({ user: user, token })
 }
 
-export async function list(req: Request, res: Response) {
+export async function list(req: RequestExtended, res: Response) {
+  console.log("ID User:", req.id)
   const users = await User.find()
 
   res.json({ users: users }).status(200)

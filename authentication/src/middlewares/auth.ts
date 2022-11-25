@@ -1,19 +1,37 @@
 import { NextFunction, Request, Response } from "express"
+import JWT, { JwtPayload } from "jsonwebtoken"
+import dotenv from "dotenv"
 import User from "../models/User"
+import { decode } from "punycode"
+
+dotenv.config()
+
+interface RequestExtended extends Request {
+  id?: string
+}
+
+interface Decoded extends JwtPayload {
+  id?: string
+}
 
 export const Auth = {
-  private: async (req: Request, res: Response, next: NextFunction) => {
+  private: async (req: RequestExtended, res: Response, next: NextFunction) => {
     let success = false
 
     if (req.headers.authorization) {
-      const hash = req.headers.authorization.substring(6)
-      const decoded = Buffer.from(hash, "base64").toString()
-      const data = decoded.split(":")
-      if (data.length === 2) {
-        const [email, password] = data
-        const user = await User.findOne({ email })
-        if (user?.password === password) {
+      const [authType, token] = req.headers.authorization.split(" ")
+      if (authType === "Bearer") {
+        try {
+          const decoded: string | Decoded = JWT.verify(
+            token,
+            process.env.JWT_SECRET_KEY as string,
+          )
+          if (typeof decoded === "object") {
+            req.id = decoded.id
+          }
           success = true
+        } catch (error) {
+          console.log(error)
         }
       }
     }
