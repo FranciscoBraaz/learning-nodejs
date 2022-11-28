@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express"
 import dotenv from "dotenv"
+import cookieParser from "cookie-parser"
 import { mongoConnect } from "./database/mongo"
 import routes from "./routes"
 
@@ -11,6 +12,7 @@ const server = express()
 
 server.use(express.urlencoded({ extended: true }))
 server.use(express.json())
+server.use(cookieParser())
 
 server.use(routes)
 

@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import JWT, { JwtPayload } from "jsonwebtoken"
 import dotenv from "dotenv"
-import User from "../models/User"
-import { decode } from "punycode"
 
 dotenv.config()
 
@@ -24,7 +22,7 @@ export const Auth = {
         try {
           const decoded: string | Decoded = JWT.verify(
             token,
-            process.env.JWT_SECRET_KEY as string,
+            process.env.ACCESS_TOKEN_SECRET as string,
           )
           if (typeof decoded === "object") {
             req.id = decoded.id
