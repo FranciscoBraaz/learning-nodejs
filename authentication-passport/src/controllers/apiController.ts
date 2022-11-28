@@ -38,8 +38,7 @@ export async function login(req: Request, res: Response) {
   res.json({ user: user, token })
 }
 
-export async function list(req: RequestExtended, res: Response) {
-  console.log("ID User:", req.id)
+export async function list(req: Request, res: Response) {
   const users = await User.find()
 
   res.json({ users: users }).status(200)
