@@ -10,6 +10,8 @@ interface RequestExtended extends Request {
 }
 
 export async function login(req: Request, res: Response) {
+  const { cookies } = req
+  console.log("Cookies:", cookies)
   const { email, password } = req.body
 
   if (!email || !password) {
@@ -35,26 +37,35 @@ export async function login(req: Request, res: Response) {
     { expiresIn: "30s" },
   )
 
-  const refreshToken = JWT.sign(
+  const newRefreshToken = JWT.sign(
     { id: user.id, email: user.email },
     process.env.REFRESH_TOKEN_SECRET as string,
-    { expiresIn: "1d" },
+    { expiresIn: "45s" },
   )
 
-  user.refreshToken = refreshToken
-  const userUpdated = await user.save()
-  console.log(userUpdated)
+  const newRefreshTokenArray = !cookies.jwt
+    ? user.refreshToken
+    : user.refreshToken.filter((rt) => rt !== cookies.jwt)
+
+  if (cookies?.jwt) {
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true })
+  }
+
+  user.refreshToken = [...newRefreshTokenArray, newRefreshToken]
+  await user.save()
+
   const userToReturn = {
     _id: user._id,
     email: user.email,
   }
 
-  res.cookie("jwt", refreshToken, {
+  res.cookie("jwt", newRefreshToken, {
     httpOnly: true,
     sameSite: "none",
     // secure: true,
     maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
   })
+
   res.json({ user: userToReturn, accessToken })
 }
 

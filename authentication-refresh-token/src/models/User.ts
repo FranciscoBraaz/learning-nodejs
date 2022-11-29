@@ -3,13 +3,13 @@ import { Schema, model, connection, Model } from "mongoose"
 type UserType = {
   email: string
   password: string
-  refreshToken: string
+  refreshToken: string[]
 }
 
 const schema = new Schema<UserType>({
   email: { type: String, required: true },
   password: { type: String, required: true },
-  refreshToken: { type: String, required: false },
+  refreshToken: { type: [String], required: false },
 })
 
 const modelName: string = "User"

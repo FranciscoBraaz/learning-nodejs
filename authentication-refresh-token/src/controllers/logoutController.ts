@@ -24,10 +24,10 @@ export async function handleLogout(req: Request, res: Response) {
       return
     }
 
-    user.refreshToken = ""
+    user.refreshToken = user.refreshToken.filter((rf) => rf !== refreshToken)
 
     await user.save()
-    res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true })
     res.sendStatus(204)
   } catch (error) {
     console.log(error)
