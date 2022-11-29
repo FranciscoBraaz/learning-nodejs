@@ -9,7 +9,7 @@ type UserType = {
 const schema = new Schema<UserType>({
   email: { type: String, required: true },
   password: { type: String, required: true },
-  refreshToken: { type: String, required: true },
+  refreshToken: { type: String, required: false },
 })
 
 const modelName: string = "User"

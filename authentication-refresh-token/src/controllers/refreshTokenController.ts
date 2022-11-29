@@ -22,7 +22,7 @@ export async function handleRefreshToken(req: RequestExtended, res: Response) {
   }
   console.log("COOKIES", cookies)
   const refreshToken = cookies.jwt
-  const user = await User.findOne(refreshToken)
+  const user = await User.findOne({ refreshToken })
   console.log("USER", user)
 
   if (!user) {
