@@ -15,7 +15,11 @@ export async function handleLogout(req: Request, res: Response) {
     const user = await User.findOne({ refreshToken })
 
     if (!user) {
-      res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        sameSite: "none",
+        // secure: true,
+      })
       res.sendStatus(204)
       return
     }

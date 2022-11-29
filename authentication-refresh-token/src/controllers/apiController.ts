@@ -51,6 +51,8 @@ export async function login(req: Request, res: Response) {
 
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
+    sameSite: "none",
+    // secure: true,
     maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
   })
   res.json({ user: userToReturn, accessToken })
