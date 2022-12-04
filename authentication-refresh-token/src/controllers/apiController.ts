@@ -34,13 +34,13 @@ export async function login(req: Request, res: Response) {
   const accessToken = JWT.sign(
     { id: user.id, email: user.email },
     process.env.ACCESS_TOKEN_SECRET as string,
-    { expiresIn: "30s" },
+    { expiresIn: "15s" },
   )
 
   const newRefreshToken = JWT.sign(
     { id: user.id, email: user.email },
     process.env.REFRESH_TOKEN_SECRET as string,
-    { expiresIn: "45s" },
+    { expiresIn: "30s" },
   )
 
   const newRefreshTokenArray = !cookies.jwt
@@ -62,7 +62,7 @@ export async function login(req: Request, res: Response) {
   res.cookie("jwt", newRefreshToken, {
     httpOnly: true,
     sameSite: "none",
-    // secure: true,
+    secure: true,
     maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
   })
 

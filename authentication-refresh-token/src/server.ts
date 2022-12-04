@@ -5,6 +5,7 @@ import cors from "cors"
 import { mongoConnect } from "./database/mongo"
 import routes from "./routes"
 import { credentials } from "./middlewares/credentials"
+import corsOptions from "./config/corsOptions"
 
 dotenv.config()
 
@@ -13,7 +14,7 @@ mongoConnect()
 const server = express()
 
 server.use(credentials)
-server.use(cors())
+server.use(cors(corsOptions))
 server.use(express.urlencoded({ extended: true }))
 server.use(express.json())
 server.use(cookieParser())

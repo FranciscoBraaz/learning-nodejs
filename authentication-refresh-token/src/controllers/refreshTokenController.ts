@@ -15,8 +15,9 @@ interface Decoded extends JwtPayload {
 
 export async function handleRefreshToken(req: RequestExtended, res: Response) {
   const { cookies } = req
-
+  console.log("cookies", cookies)
   if (!cookies?.jwt) {
+    console.log("sem token")
     res.status(401).json({ message: "Não autorizado" })
     return
   }
@@ -60,13 +61,13 @@ export async function handleRefreshToken(req: RequestExtended, res: Response) {
     const accessToken = JWT.sign(
       { id: user.id, email: user.email },
       process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: "30s" },
+      { expiresIn: "15s" },
     )
 
     const newRefreshToken = JWT.sign(
       { id: user.id, email: user.email },
       process.env.REFRESH_TOKEN_SECRET as string,
-      { expiresIn: "45s" },
+      { expiresIn: "30s" },
     )
 
     user.refreshToken = [...newRefreshTokenArray, newRefreshToken]
@@ -75,13 +76,12 @@ export async function handleRefreshToken(req: RequestExtended, res: Response) {
     res.cookie("jwt", newRefreshToken, {
       httpOnly: true,
       sameSite: "none",
-      // secure: true,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
     })
 
     res.status(200).json({ accessToken })
   } catch (error) {
-    console.log("USer", user)
     //@ts-ignore
     if (error.name === "TokenExpiredError" && user) {
       const newRefreshTokenArray = user.refreshToken.filter(
@@ -91,7 +91,10 @@ export async function handleRefreshToken(req: RequestExtended, res: Response) {
       user.refreshToken = [...newRefreshTokenArray]
       const result = await user.save()
       console.log("After check is expired", result)
+
+      res.status(403).json({ message: "Não autorizado" })
+      return
     }
-    res.status(401).json({ message: "Não autorizado" })
+    res.status(500).json({ message: "Erro do servidor" })
   }
 }

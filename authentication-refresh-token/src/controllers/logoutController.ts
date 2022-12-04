@@ -18,7 +18,7 @@ export async function handleLogout(req: Request, res: Response) {
       res.clearCookie("jwt", {
         httpOnly: true,
         sameSite: "none",
-        // secure: true,
+        secure: true,
       })
       res.sendStatus(204)
       return
