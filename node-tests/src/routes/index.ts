@@ -12,5 +12,6 @@ router.get("/", (req, res) => {
 router.post("/login", Api.login)
 router.get("/list", Auth.private, Api.list)
 router.post("/contato", EmailController.contact)
+router.post("/cadastro", Api.register)
 
 export default router
