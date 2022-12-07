@@ -5,12 +5,11 @@ export async function createUser(email: string, password: string) {
   const user = await User.findOne({ email })
 
   if (user) {
-    throw new Error("E-email já cadastrado")
+    throw new Error("E-mail já cadastrado")
   }
 
   const hash = bcrypt.hashSync(password, 10)
   const newUser = await User.create({ email, password: hash })
-
   return newUser
 }
 

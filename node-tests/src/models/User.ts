@@ -1,6 +1,6 @@
 import { Schema, model, connection, Model } from "mongoose"
 
-type UserType = {
+export type UserType = {
   email: string
   password: string
 }
