@@ -16,8 +16,32 @@ it("should divide two numbers correctly", () => {
   expect(MathLib.div(4, 2)).toBe(2)
 })
 
-it("should multiply two numbers correctly", () => {
+it("should multiply  two numbers correctly", () => {
   expect(MathLib.mult(2, 3)).toBe(6)
   expect(MathLib.mult(4, 0)).toBe(0)
   expect(MathLib.mult(4, -1)).toBe(-4)
+})
+
+it("should compare object", () => {
+  const obj1 = { a: 4, b: 2 }
+  const obj2 = { a: 6, b: 2 }
+
+  expect(MathLib.equalObj(obj1, obj2)).toStrictEqual({ a: 10, b: 4 })
+})
+
+it.only("verify property", () => {
+  const obj = {
+    email: "teste@gmail.com",
+    id: "123@323",
+  }
+
+  expect(obj).toHaveProperty("email")
+})
+
+it.only("verify error", () => {
+  function throwError() {
+    throw new Error("Erro")
+  }
+
+  expect(() => throwError()).toThrow(new Error("Erro"))
 })
