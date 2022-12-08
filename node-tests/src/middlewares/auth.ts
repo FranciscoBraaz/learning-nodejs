@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import JWT, { JwtPayload } from "jsonwebtoken"
 import dotenv from "dotenv"
-import User from "../models/User"
-import { decode } from "punycode"
 
 dotenv.config()
 
@@ -39,7 +37,7 @@ export const Auth = {
     if (success) {
       next()
     } else {
-      res.status(403).json({ error: "Não autorizado" })
+      res.status(403).json({ message: "Não autorizado" })
     }
   },
 }

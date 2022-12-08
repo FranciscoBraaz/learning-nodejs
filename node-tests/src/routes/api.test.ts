@@ -7,6 +7,7 @@ import db from "../database/database"
 describe("Testing api routes", () => {
   const email = "test@gmail.com"
   const password = "123456"
+  let token = ""
 
   beforeAll(async () => {
     try {
@@ -59,6 +60,7 @@ describe("Testing api routes", () => {
         expect(response.body.message).toBeUndefined()
         expect(response.body).toHaveProperty("user")
         expect(response.body).toHaveProperty("token")
+        token = response.body.token
         return done()
       })
   })
@@ -99,6 +101,39 @@ describe("Testing api routes", () => {
       .send(`email=${"wrong"}&password=${password}`)
       .then((response) => {
         expect(response.body.message).toBe("Email ou senha incorretos")
+        return done()
+      })
+  })
+
+  it("should get all users", (done) => {
+    request(app)
+      .get("/list")
+      .set("Authorization", `Bearer ${token}`)
+      .then((response) => {
+        expect(response.body.message).toBeUndefined()
+        expect(response.body).toHaveProperty("users")
+        expect(response.body.users.length).toBeGreaterThanOrEqual(1)
+        return done()
+      })
+  })
+
+  it("should not get all users without token", (done) => {
+    request(app)
+      .get("/list")
+      .then((response) => {
+        expect(response.body.message).toBe("Não autorizado")
+        return done()
+      })
+  })
+
+  it("should not get all users with wrong token", (done) => {
+    const fakeToken = "eyJh12"
+
+    request(app)
+      .get("/list")
+      .set("Authorization", `Bearer ${fakeToken}`)
+      .then((response) => {
+        expect(response.body.message).toBe("Não autorizado")
         return done()
       })
   })
